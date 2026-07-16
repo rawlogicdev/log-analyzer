@@ -118,7 +118,3 @@ analyzer.filterWarnings("raport_bledow.txt")
 
 ```
 
-```
-
----
-```
