@@ -1,29 +1,41 @@
-with open("system_logs.txt", "r", encoding="utf-8") as file:
-    linie = file.readlines()
-print(f"Liczba wpisów w logach: {len(linie)}")
+
+from analyzer import LogAnalyzer
+from pathlib import Path
+
+print("=== Welcome to System Log Analyzer ===")
+
+while True:
+    user_path = input("Enter the path to your log file (e.g., system_logs.txt): ")
+    
+    path = Path(user_path)
+
+    if path.exists() and path.is_file():
+        break
+    else:
+        print("Path doesn't exist or is not a file. Enter a valid path!")
+
+
+analyzer = LogAnalyzer(user_path)
 
 while True:
     print("\nMenu:")
-    print("1. Wyświetl wszystkie wpisy")
-    print("2. Wyfiltruj linie z błędem")
-    print("3. Zakończ program")
+    print("1. Display all log entries")
+    print("2. Filter the bugs")
+    print("3. Quit")
 
-    choice = input("Wybierz opcję (1-3): ")
+    choice = input("Select an option (1-3): ")
+    
     if choice == "1":
-        print("\nZawartość logów:")
-        for line in linie:
-            print(line.strip())
+        print(f"\nFile content: ({analyzer.source}):")
+        analyzer.showEverything()
+        
     elif choice == "2":
-        print("\nWpisy z błędem:")
-        with open("critical_logs.txt", "a", encoding="utf-8") as log_file:
-            for line in linie:
-                if "ERROR" in line or "WARNING" in line or "CRITICAL" in line:
-                    stripped_line = line.strip()
-                    print(stripped_line)
-                    log_file.write(stripped_line + "\n")
+        output_file = input("Input your desired file name (e.g., warnings.txt): ")
+        print("\nList of exceptions:")
+        analyzer.filterWarnings(output_file)
 
     elif choice == "3":
-        print("Zakończono program.")
+        print("Built by rawlogic")
         break
     else:
-        print("Nieprawidłowa opcja. Spróbuj ponownie.")
+        print("Wrong choice. Try again.")
