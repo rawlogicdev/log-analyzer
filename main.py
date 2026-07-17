@@ -1,4 +1,3 @@
-
 from analyzer import LogAnalyzer
 from pathlib import Path
 
@@ -6,16 +5,23 @@ print("=== Welcome to System Log Analyzer ===")
 
 while True:
     user_path = input("Enter the path to your log file (e.g., system_logs.txt): ")
-    
     path = Path(user_path)
 
     if path.exists() and path.is_file():
         break
     else:
         print("Path doesn't exist or is not a file. Enter a valid path!")
+        
+while True:
+    warning_dir = input("Enter the FOLDER where you want to save reports (e.g., C:/Users/rawlogic/Desktop): ")
+    dir_path = Path(warning_dir)
+    
+    if dir_path.exists() and dir_path.is_dir():
+        break
+    else:
+        print("Directory doesn't exist or is not a folder! Enter a valid path.")
 
-
-analyzer = LogAnalyzer(user_path)
+analyzer = LogAnalyzer(user_path, "")
 
 while True:
     print("\nMenu:")
@@ -30,9 +36,14 @@ while True:
         analyzer.showEverything()
         
     elif choice == "2":
-        output_file = input("Input your desired file name (e.g., warnings.txt): ")
+        file_name = input("Input your desired file name (e.g., warnings.txt): ")
+        
+        full_output_path = dir_path / file_name
+        
+        analyzer.output = str(full_output_path)
+        
         print("\nList of exceptions:")
-        analyzer.filterWarnings(output_file)
+        analyzer.filterWarnings()
 
     elif choice == "3":
         print("Built by rawlogic")
