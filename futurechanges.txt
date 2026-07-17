@@ -1,2 +1,0 @@
-PRZYSZLE ZMIANY 
-- zmiana logiki handlowania exceptions - zamiast printowac kazdy blad, pokaze ilosc lini z bledami // (podzial na typ bledu. np ERROR - 2, CRITICAL - 0)

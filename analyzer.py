@@ -32,6 +32,7 @@ class LogAnalyzer:
 
     def filterWarnings(self):
         keywords_set = {kw.lower() for kw in self.KEYWORDS}
+        found_errors_count = 0
         try:
             with open(self.source, "r", encoding="utf-8") as infile, \
                  open(self.output, "w", encoding="utf-8") as outfile:
@@ -45,10 +46,12 @@ class LogAnalyzer:
                     beggining_text = " ".join(beggining_words).lower() # zmieniamy liste spowrotem w stringa 
                     
                     if any(word in keywords_set for word in beggining_words):
-                        print(line.strip())
                         outfile.write(line) 
+                        found_errors_count += 1
 
             print(f"\n[INFO] Filtered warnings available in {self.output}")
+            print(f"\n[INFO] Total errors found: {found_errors_count}")
+            
            
         except FileNotFoundError:
             print(f"ERROR: Source file {self.source} does not exist.")

@@ -1,19 +1,22 @@
+````markdown
 🇬🇧
 
 # Simple LogAnalyzer 📋🔍
 
-[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/rawlogicdev/simple-loganalyzer)
+[![Version](https://img.shields.io/badge/version-2.1-blue.svg)](https://github.com/rawlogicdev/simple-loganalyzer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A lightweight, modular, and terminal-based utility designed to parse, filter, and extract critical error logs from messy log files. This tool can be used either as an **interactive CLI tool** or imported as an **OOP library** in other Python projects.
 
 ---
 
-## Key Features
+## 🌟 Key Features
 
 - **OOP Architecture:** Clean object-oriented structure using Python classes, making it easily reusable.
-- **Dynamic File Paths:** No hardcoded values. Input source and output export paths are defined by the user in real-time.
-- **Bug Filtering:** Automatically detects warning, error, and critical patterns (`WARNING`, `ERROR`, `CRITICAL`) and isolates them.
+- **Advanced Target Directory Management:** User defines both the source file path and a dedicated target output directory where logs will be securely exported.
+- **Smart Parsing Algorithm:** Analyzes the first 4 words of each log entry, automatically strips punctuation, and matches logs against an extensive keyword list using high-performance **set comprehensions** ($O(1)$ lookups). This eliminates false positives (e.g., words like _DefaultSpeculator_ won't trigger a false _fault_ match).
+- **Categorized Keyword Dictionary:** Built-in detection for a wide range of operational anomalies, including critical crashes, standard network/transaction failures, timeouts, and security warnings.
+- **Error Counter & Statistics:** Keeps track of the total number of intercepted warnings/errors and provides a summary upon completing the export.
 - **Interactive CLI Menu:** User-friendly terminal interface for fast navigation.
 
 ---
@@ -23,9 +26,9 @@ A lightweight, modular, and terminal-based utility designed to parse, filter, an
 `Simple LogAnalyzer` processes your raw application logs through a clean, interactive flow:
 
 ```text
-[User Input Path] ──> [LogAnalyzer Object] ──> [Interactive CLI Menu] ──> [Custom export.txt]
-
+[Source Log File] ──> [Target Directory Input] ──> [Smart Header Parsing] ──> [Error Count & Custom Export File]
 ```
+````
 
 ---
 
@@ -35,25 +38,28 @@ Clone the repository and choose how you want to use it:
 
 ### 1. As an Interactive CLI Program
 
-Simply run the main script and follow the on-screen instructions in your terminal:
+Simply run the main script and follow the on-screen instructions in your terminal to specify your file, output directory, and actions:
 
+```bash
 python main.py
+
+```
 
 ### 2. As a Library in Your Own Python Code
 
-Import the `LogAnalyzer` class directly into your backend scripts:
+Import the `LogAnalyzer` class directly into your backend scripts. The constructor now accepts both the input source and the target output path:
 
 ```python
 from analyzer import LogAnalyzer
 
-# Initialize the analyzer with your source log file
-analyzer = LogAnalyzer("my_app.log")
+# Initialize the analyzer with your source log file and target output file path
+analyzer = LogAnalyzer("my_app.log", "reports/errors_v1.txt")
 
-# Display everything
+# Display everything in the terminal
 analyzer.showEverything()
 
-# Extract and save errors to a custom file
-analyzer.filterWarnings("filtered_errors.txt")
+# Extract, count, and save targeted errors/warnings directly to the specified output path
+analyzer.filterWarnings()
 
 ```
 
@@ -67,11 +73,13 @@ Lekkie, modułowe narzędzie konsolowe stworzone do parsowania, filtrowania i wy
 
 ---
 
-## Główne Funkcje
+## 🌟 Główne Funkcje
 
 - **Architektura OOP:** Czysta, obiektowa struktura z użyciem klas Pythona, ułatwiająca ponowne wykorzystanie kodu.
-- **Dynamiczne Ścieżki:** Brak sztywno wpisanych nazw plików. Ścieżka wejściowa i nazwa pliku wyjściowego są podawane przez użytkownika w czasie rzeczywistym.
-- **Filtrowanie Błędów:** Automatycznie wykrywa błędy (`WARNING`, `ERROR`, `CRITICAL`) i izoluje je od reszty wpisów.
+- **Zaawansowane zarządzanie ścieżkami:** Użytkownik wskazuje plik źródłowy oraz osobno definiuje dedykowany **folder zapisu** raportów za pomocą biblioteki `pathlib`.
+- **Inteligentny algorytm parsowania:** Program analizuje pierwsze 4 wyrazy każdego wpisu, automatycznie oczyszcza je z interpunkcji i sprawdza dopasowania w oparciu o superwydajne wyrażenia zbiorotwórcze (**set comprehensions** – czas wyszukiwania $O(1)$). Zapobiega to fałszywym dopasowaniom (np. słowo _DefaultSpeculator_ nie wywoła już fałszywego alarmu dla słowa _fault_).
+- **Szeroka baza słów kluczowych:** Wbudowana detekcja anomalii podzielona tematycznie (krytyczne awarie, błędy standardowe, problemy sieciowe/tranzakcyjne oraz ostrzeżenia bezpieczeństwa).
+- **Licznik błędów i statystyki:** Program zlicza wszystkie dopasowane anomalie i wyświetla ich podsumowanie w konsoli po zakończeniu zapisu do pliku.
 - **Interaktywne Menu CLI:** Przyjazny interfejs tekstowy umożliwiający szybką pracę z poziomu terminala.
 
 ---
@@ -81,7 +89,7 @@ Lekkie, modułowe narzędzie konsolowe stworzone do parsowania, filtrowania i wy
 `Simple LogAnalyzer` przetwarza surowe logi aplikacji w prosty i interaktywny sposób:
 
 ```text
-[Wskazany Plik Logu] ──> [Obiekt LogAnalyzer] ──> [Interaktywne Menu CLI] ──> [Własny plik wyjściowy]
+[Wskazany Plik Logu] ──> [Wybór Folderu Zapisu] ──> [Inteligentne Parsowanie] ──> [Podsumowanie i Plik Wyjściowy]
 
 ```
 
@@ -93,7 +101,7 @@ Sklonuj repozytorium i wybierz preferowany sposób użycia:
 
 ### 1. Jako Interaktywny Program CLI
 
-Uruchom główny skrypt i postępuj zgodnie z instrukcjami wyświetlanymi w terminalu:
+Uruchom główny skrypt i postępuj zgodnie z instrukcjami wyświetlanymi w terminalu, aby podać ścieżki oraz wywołać odpowiednie akcje:
 
 ```bash
 python main.py
@@ -102,19 +110,23 @@ python main.py
 
 ### 2. Jako Biblioteka w Twoim Własnym Kodzie
 
-Zaimportuj klasę `LogAnalyzer` bezpośrednio do swoich skryptów backendowych:
+Zaimportuj klasę `LogAnalyzer` bezpośrednio do swoich skryptów backendowych. Konstruktor przyjmuje teraz zarówno plik wejściowy, jak i ścieżkę wyjściową:
 
 ```python
 from analyzer import LogAnalyzer
 
-# Zainicjalizuj analizator ze wskazanym plikiem z logami
-analyzer = LogAnalyzer("logi_serwera.log")
+# Zainicjalizuj analizator ze wskazanym plikiem źródłowym oraz docelowym plikiem raportu
+analyzer = LogAnalyzer("logi_serwera.log", "raporty/wykryte_bledy.txt")
 
-# Wyświetl wszystkie wpisy
+# Wyświetl wszystkie wpisy w konsoli
 analyzer.showEverything()
 
-# Przefiltruj i zapisz błędy do nowego pliku
-analyzer.filterWarnings("raport_bledow.txt")
+# Przefiltruj, podsumuj i zapisz błędy bezpośrednio do zdefiniowanej wcześniej ścieżki docelowej
+analyzer.filterWarnings()
 
 ```
 
+```
+
+---
+```
