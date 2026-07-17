@@ -36,9 +36,14 @@ class LogAnalyzer:
                  open(self.output, "w", encoding="utf-8") as outfile:
                 
                 for line in infile:
-                    line_lower = line.lower()
+                    words = line.split() # zmiana calej lini na osobne wyrazy (robi sie lista)
+                    if not words:
+                        continue
                     
-                    if any(keyword in line_lower for keyword in self.KEYWORDS):
+                    beggining_words = words[:4] # bierzemy tylko 4 pierwsze wyrazy z listy i filtrujemy je
+                    beggining_text = " ".join(beggining_words).lower() # zmieniamy liste spowrotem w stringa 
+                    
+                    if any(keyword in beggining_text for keyword in self.KEYWORDS):
                         print(line.strip())
                         outfile.write(line) 
 
