@@ -23,10 +23,9 @@ A lightweight, modular, and terminal-based utility designed to parse, filter, an
 ## 🛠️ How It Works
 
 `Simple LogAnalyzer` processes your raw application logs through a clean, interactive flow:
-
+```
 [Source Log File] ──> [Target Directory Input] ──> [Smart Header Parsing] ──> [Error Count & Custom Export File]
 ```
-````
 
 ---
 
@@ -122,6 +121,3 @@ analyzer.showEverything()
 # Przefiltruj, podsumuj i zapisz błędy bezpośrednio do zdefiniowanej wcześniej ścieżki docelowej
 analyzer.filterWarnings()
 
-```
-
-```
