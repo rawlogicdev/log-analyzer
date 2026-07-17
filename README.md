@@ -1,4 +1,3 @@
-````markdown
 🇬🇧
 
 # Simple LogAnalyzer 📋🔍
@@ -25,7 +24,6 @@ A lightweight, modular, and terminal-based utility designed to parse, filter, an
 
 `Simple LogAnalyzer` processes your raw application logs through a clean, interactive flow:
 
-```text
 [Source Log File] ──> [Target Directory Input] ──> [Smart Header Parsing] ──> [Error Count & Custom Export File]
 ```
 ````
@@ -126,7 +124,4 @@ analyzer.filterWarnings()
 
 ```
 
-```
-
----
 ```
