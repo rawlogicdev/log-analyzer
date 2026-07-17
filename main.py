@@ -38,7 +38,7 @@ while True:
     elif choice == "2":
         file_name = input("Input your desired file name (e.g., warnings.txt): ")
         
-        full_output_path = dir_path / file_name
+        full_output_path = dir_path / file_name # łączymy sciezke z sciezka do pliku
         
         analyzer.output = str(full_output_path)
         

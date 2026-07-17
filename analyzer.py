@@ -31,6 +31,7 @@ class LogAnalyzer:
             print(f"ERROR: Couldnt find the file {self.source}")
 
     def filterWarnings(self):
+        keywords_set = {kw.lower() for kw in self.KEYWORDS}
         try:
             with open(self.source, "r", encoding="utf-8") as infile, \
                  open(self.output, "w", encoding="utf-8") as outfile:
@@ -40,10 +41,10 @@ class LogAnalyzer:
                     if not words:
                         continue
                     
-                    beggining_words = words[:4] # bierzemy tylko 4 pierwsze wyrazy z listy i filtrujemy je
+                    beggining_words = [w.strip("[],.:;()\"'").lower() for w in words[:4]] # bierzemy tylko 4 pierwsze wyrazy z listy, stripujemy je z interpunkcji i filtrujemy je
                     beggining_text = " ".join(beggining_words).lower() # zmieniamy liste spowrotem w stringa 
                     
-                    if any(keyword in beggining_text for keyword in self.KEYWORDS):
+                    if any(word in keywords_set for word in beggining_words):
                         print(line.strip())
                         outfile.write(line) 
 
